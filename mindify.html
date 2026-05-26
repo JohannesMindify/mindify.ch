@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <meta name="CCBot" content="noindex, nofollow">
+  <meta name="GPTBot" content="noindex, nofollow">
+  <meta name="Google-Extended" content="noindex, nofollow">
+  <meta name="anthropic-ai" content="noindex, nofollow">
+  <title>Mindify — Johannes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #1a1a18;
+      --ink-light: #6b6b65;
+      --paper: #f7f5f0;
+      --accent: #2d4a5a;
+      --accent-light: #c2d4de;
+      --contact-bg: #3d6b5a;
+      --line: rgba(26,26,24,0.12);
+      --serif: 'Cormorant Garamond', Georgia, serif;
+      --sans: 'DM Sans', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* NAVIGATION */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 2rem 4rem;
+      background: var(--paper);
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.4s;
+    }
+    nav.scrolled { border-color: var(--line); }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+    }
+    .logo-mark {
+      width: 36px;
+      height: 36px;
+    }
+    .logo-mark svg { width: 100%; height: 100%; }
+    .logo-text { display: flex; flex-direction: column; }
+    .logo-name {
+      font-family: var(--serif);
+      font-size: 1.2rem;
+      font-weight: 400;
+      color: var(--ink);
+      letter-spacing: 0.02em;
+      line-height: 1;
+    }
+    .logo-sub {
+      font-size: 0.65rem;
+      color: var(--ink-light);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-top: 3px;
+    }
+
+    .nav-cta {
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid var(--accent-light);
+      padding-bottom: 2px;
+      transition: border-color 0.3s;
+    }
+    .nav-cta:hover { border-color: var(--accent); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 4rem 6rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .hero-bg-word {
+      font-family: var(--serif);
+      font-size: clamp(12rem, 22vw, 20rem);
+      font-weight: 300;
+      color: rgba(26,26,24,0.035);
+      letter-spacing: -0.05em;
+      white-space: nowrap;
+      user-select: none;
+      padding-right: 2rem;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.2s forwards;
+    }
+
+    .hero-title {
+      font-family: var(--serif);
+      font-size: clamp(2.8rem, 6vw, 5.5rem);
+      font-weight: 300;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      max-width: 18ch;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.4s forwards;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero-line {
+      width: 60px;
+      height: 1px;
+      background: var(--ink);
+      margin: 3rem 0 2rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.6s forwards;
+    }
+
+    .hero-sub {
+      font-size: 1rem;
+      color: var(--ink-light);
+      max-width: 44ch;
+      line-height: 1.8;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.8s forwards;
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 2.5rem;
+      right: 4rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+      animation: fadeIn 1s 1.4s forwards;
+    }
+    .hero-scroll span {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      writing-mode: vertical-rl;
+    }
+    .scroll-line {
+      width: 1px;
+      height: 60px;
+      background: linear-gradient(to bottom, var(--ink-light), transparent);
+      animation: scrollPulse 2s 2s infinite;
+    }
+
+    /* SECTIONS */
+    section { padding: 8rem 4rem; }
+
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 3rem;
+    }
+
+    /* INTRO */
+    .intro {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: start;
+      border-top: 1px solid var(--line);
+    }
+
+    .intro-title {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 300;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+    }
+
+    .intro-right { padding-top: 5rem; }
+
+    .intro-text {
+      font-size: 1rem;
+      color: var(--ink-light);
+      line-height: 1.9;
+      margin-bottom: 1.5rem;
+    }
+
+    .intro-text strong { color: var(--ink); font-weight: 400; }
+
+    /* OFFER */
+    .offer {
+      background: var(--ink);
+      color: var(--paper);
+      padding: 8rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .offer::before {
+      content: 'Raum';
+      position: absolute;
+      right: 3rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: var(--serif);
+      font-size: clamp(12rem, 22vw, 20rem);
+      font-weight: 300;
+      color: rgba(247,245,240,0.04);
+      letter-spacing: -0.05em;
+      pointer-events: none;
+    }
+
+    .offer-inner { max-width: 640px; }
+
+    .offer .section-label { color: var(--accent-light); }
+
+    .offer-title {
+      font-family: var(--serif);
+      font-size: clamp(2.2rem, 4vw, 3.5rem);
+      font-weight: 300;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 2.5rem;
+    }
+
+    .offer-title em { font-style: italic; color: var(--accent-light); }
+
+    .offer-desc {
+      font-size: 1rem;
+      color: rgba(247,245,240,0.65);
+      line-height: 1.9;
+      margin-bottom: 3rem;
+    }
+
+    .offer-details {
+      display: flex;
+      gap: 3rem;
+      border-top: 1px solid rgba(247,245,240,0.12);
+      padding-top: 2rem;
+    }
+
+    .offer-detail-value {
+      font-family: var(--serif);
+      font-size: 2rem;
+      font-weight: 300;
+      color: var(--paper);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .offer-detail-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(247,245,240,0.4);
+    }
+
+    /* ABOUT */
+    .about {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 6rem;
+      border-top: 1px solid var(--line);
+    }
+
+    .about-title {
+      font-family: var(--serif);
+      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      font-weight: 300;
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+      margin-bottom: 2.5rem;
+    }
+
+    .about-title em { font-style: italic; color: var(--accent); }
+
+    .about-text {
+      font-size: 1rem;
+      color: var(--ink-light);
+      line-height: 1.9;
+      margin-bottom: 1.5rem;
+    }
+
+    .about-text strong { color: var(--ink); font-weight: 400; }
+
+    .about-orte {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 2.5rem;
+    }
+
+    .ort-tag {
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      padding: 6px 14px;
+      border: 1px solid var(--line);
+      border-radius: 100px;
+      color: var(--ink-light);
+    }
+
+    /* CONTACT */
+    .contact {
+      background: #3d6b5a;
+      color: var(--paper);
+      text-align: center;
+      padding: 10rem 4rem;
+    }
+
+    .contact .section-label { color: var(--accent-light); margin-bottom: 2rem; }
+
+    .contact-title {
+      font-family: var(--serif);
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 3rem;
+      max-width: 20ch;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .contact-link {
+      display: inline-block;
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--paper);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(247,245,240,0.4);
+      padding-bottom: 4px;
+      transition: border-color 0.3s;
+    }
+    .contact-link:hover { border-color: var(--paper); }
+
+    /* FOOTER */
+    footer {
+      padding: 2.5rem 4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--line);
+    }
+
+    .footer-name {
+      font-family: var(--serif);
+      font-size: 0.9rem;
+      color: var(--ink-light);
+    }
+
+    .footer-copy {
+      font-size: 0.72rem;
+      color: var(--ink-light);
+      letter-spacing: 0.05em;
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav { padding: 1.5rem 2rem; }
+      .hero { padding: 0 2rem 5rem; }
+      section { padding: 5rem 2rem; }
+      .offer { padding: 5rem 2rem; }
+      .contact { padding: 6rem 2rem; }
+      footer { padding: 2rem; flex-direction: column; gap: 1rem; text-align: center; }
+      .intro { grid-template-columns: 1fr; gap: 3rem; }
+      .intro-right { padding-top: 0; }
+      .about { grid-template-columns: 1fr; gap: 2rem; }
+      .hero-scroll { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <a href="#" class="logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Mindify Bildmarke — organischer Bogen, Kelch-Energie, Punkt, Linie -->
+          <path d="M30 84 C52 114 74 128 100 128 C126 128 148 114 170 84"
+                stroke="#2d4a5a" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+          <path d="M58 88 C72 108 86 116 100 116 C114 116 128 108 142 88"
+                stroke="#2d4a5a" stroke-width="1.0" fill="none" stroke-linecap="round" opacity="0.15"/>
+          <circle cx="100" cy="66" r="11" fill="#3d6b5a"/>
+          <line x1="100" y1="128" x2="100" y2="158" stroke="#2d4a5a" stroke-width="2.0" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="logo-text">
+        <div class="logo-name">Mindify</div>
+        <div class="logo-sub">Johannes · Denkpartner</div>
+      </div>
+    </a>
+    <a href="#contact" class="nav-cta">Kontakt</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="hero-bg-word">Mindify</div>
+    </div>
+    <div class="hero-eyebrow">Denkpartner für Menschen, die gestalten wollen</div>
+    <h1 class="hero-title">
+      Du weisst, was du willst.<br>
+      Was hält dich davon ab, es <em>wirklich</em> zu leben?
+    </h1>
+    <div class="hero-line"></div>
+    <p class="hero-sub">Manchmal braucht es nur jemanden von aussen, der genau hinhört — und die Frage stellt, die sonst niemand stellt.</p>
+    <div class="hero-scroll">
+      <div class="scroll-line"></div>
+      <span>Entdecken</span>
+    </div>
+  </section>
+
+  <!-- INTRO -->
+  <section class="intro" id="intro">
+    <div class="intro-left reveal">
+      <p class="section-label">Was ich tue</p>
+      <h2 class="intro-title">Ich schaffe Raum für das, was wirklich zählt.</h2>
+    </div>
+    <div class="intro-right reveal">
+      <p class="intro-text">Ich bin <strong>Johannes</strong> — Denkpartner für Menschen, die gestalten wollen. Ob du ein Team führst, ein Unternehmen aufbaust oder einfach spürst, dass du mehr aus dir machen kannst.</p>
+      <p class="intro-text">Ich liefere keine Folien, keine Konzepte, keine Roadmaps. Ich öffne den Blick — für die Fragen, die sich stauen, und die Antworten, die schon längst da sind.</p>
+      <p class="intro-text">Denn meistens liegt das Problem nicht im Plan. Es liegt in dem, was <strong>nicht ausgesprochen wird</strong>.</p>
+    </div>
+  </section>
+
+  <!-- OFFER -->
+  <div class="offer" id="angebot">
+    <div class="offer-inner">
+      <p class="section-label">Die Begegnung</p>
+      <h2 class="offer-title">Ein <em>Gespräch</em>, das etwas verändert</h2>
+      <p class="offer-desc">Keine Agenda, kein Drehbuch. Wir treffen uns dort, wo Offenheit entsteht — beim Kaffee, beim Spaziergang, im ruhigen Restaurant. Ich höre zu und frage nach, bis das sichtbar wird, was wirklich zählt.</p>
+      <p class="offer-desc">Du gehst mit einer Perspektive, die du vorher nicht hattest. Und meistens mit der Antwort, die schon längst in dir war.</p>
+      <div class="offer-details">
+        <div class="offer-detail-item">
+          <div class="offer-detail-value">Tief</div>
+          <div class="offer-detail-label">Kein Small Talk</div>
+        </div>
+        <div class="offer-detail-item">
+          <div class="offer-detail-value">Offen</div>
+          <div class="offer-detail-label">Kein starres Format</div>
+        </div>
+        <div class="offer-detail-item">
+          <div class="offer-detail-value">Echt</div>
+          <div class="offer-detail-label">Keine Folien</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <section class="about" id="about">
+    <div class="about-left reveal">
+      <p class="section-label">Über mich</p>
+    </div>
+    <div class="about-right reveal">
+      <h2 class="about-title">Ich frage, was <em>niemand sonst</em> fragt.</h2>
+      <p class="about-text">Ich habe in verschiedenen Rollen erlebt, wie gute Pläne im Alltag versanden — nicht weil sie schlecht waren, sondern weil niemand die unbequemen Fragen gestellt hat.</p>
+      <p class="about-text">Heute tue ich genau das. Ich beobachte, höre zu und frage — bis der eigentliche Kern sichtbar wird und das Wesentliche ans Licht kommt.</p>
+      <p class="about-text">Manchmal braucht es einfach jemanden, der hinhört — und nachfragt.</p>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <div class="contact" id="contact">
+    <p class="section-label">Kontakt</p>
+    <h2 class="contact-title">Bereit für den Moment, der etwas in Bewegung bringt?</h2>
+    <a href="mailto:johannes@mindify.ch" class="contact-link">Dann lass uns reden</a>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <span class="footer-name">Mindify · Johannes</span>
+    <span class="footer-copy">© 2026 · Schweiz</span>
+  </footer>
+
+  <script>
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 120);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    reveals.forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
